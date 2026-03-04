@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>健康沙拉日记 | Healthy Salad Diary | @Jobs_t</title>
+  <style>
+    :root {
+      --primary: #4a90e2;
+      --primary-dark: #357abd;
+      --accent: #27ae60;
+      --accent-dark: #219653;
+      --bg-light: #f9fcfa;
+      --card-bg: #ffffff;
+      --text: #2c3e50;
+      --text-light: #7f8c8d;
+      --calorie: #e74c3c;
+      --border: #e0f0e9;
+    }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, #81d4fa 100%);
+      color: white;
+      text-align: center;
+      padding: 80px 20px 60px;
+      box-shadow: 0 4px 20px rgba(74,144,226,0.2);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 3.2em;
+      font-weight: 700;
+    }
+    header .subtitle {
+      font-size: 1.4em;
+      margin: 12px 0 8px;
+      opacity: 0.95;
+    }
+    .action-buttons {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      gap: 12px;
+    }
+    .action-buttons button {
+      padding: 12px 24px;
+      font-size: 1.05em;
+      background: rgba(255,255,255,0.95);
+      color: var(--primary-dark);
+      border: none;
+      border-radius: 50px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .action-buttons button:hover {
+      background: var(--accent);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(39,174,96,0.3);
+    }
+    .container {
+      max-width: 1240px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 32px;
+    }
+    .flip-card {
+      background-color: transparent;
+      width: 100%;
+      height: 540px;
+      perspective: 1200px;
+      border-radius: 16px;
+      cursor: pointer;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.85s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transform-style: preserve-3d;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border-radius: 16px;
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .flip-card-front {
+      display: flex;
+      flex-direction: column;
+    }
+    .flip-card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.45em;
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+    .desc {
+      color: var(--text-light);
+      font-size: 0.98em;
+      margin: 0 0 12px;
+    }
+    .ingredients {
+      font-size: 0.92em;
+      text-align: left;
+      margin: 12px 0;
+    }
+    .ingredients table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .ingredients th, .ingredients td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .ingredients th {
+      background: #f0f9f4;
+      color: var(--accent-dark);
+    }
+    .calorie {
+      font-weight: 700;
+      color: var(--calorie);
+      font-size: 1.15em;
+      margin-top: 10px;
+      text-align: right;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+      padding: 24px;
+      overflow-y: auto;
+      background: linear-gradient(to bottom, #f0fdf4, #ffffff);
+    }
+    .steps {
+      text-align: left;
+      padding-left: 22px;
+      margin: 16px 0 0;
+      font-size: 0.97em;
+      color: #34495e;
+    }
+    .steps li { margin-bottom: 12px; }
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--primary);
+      color: white;
+      margin-top: 80px;
+      font-size: 0.95em;
+    }
+    .bilingual {
+      display: block;
+      margin: 4px 0;
+    }
+    .en { font-size: 0.92em; color: var(--text-light); font-style: italic; }
+    @media (max-width: 768px) {
+      header { padding: 60px 15px 40px; }
+      header h1 { font-size: 2.4em; }
+      .flip-card { height: 580px; }
+      .action-buttons { top: 15px; right: 15px; flex-direction: column; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>健康沙拉日记<br><span style="font-size:0.8em; opacity:0.9;">Healthy Salad Diary</span></h1>
+    <p class="subtitle">点击卡片翻转查看详细做法 · Click card to flip for full recipe</p>
+    <p>@Jobs_t · Fresh veggies + quality protein, one bowl a day keeps energy high!</p>
+  </header>
+
+  <div class="action-buttons">
+    <button onclick="window.print()">🖨️ Print 打印</button>
+    <button onclick="sharePage()">📤 Share 分享</button>
+  </div>
+
+  <div class="container">
+    <div class="gallery">
+
+      <!-- 1 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://i.ytimg.com/vi/KCZJsIkEmyw/maxresdefault.jpg" alt="Avocado Japanese Egg Roll Veggie Salad">
+            <div class="card-content">
+              <div>
+                <h3>牛油果日式蛋卷蔬菜沙拉<br><span class="en">Avocado Japanese Egg Roll Veggie Salad</span></h3>
+                <p class="desc bilingual">健康脂肪与蛋白完美结合<br><span class="en">Perfect balance of healthy fats & protein</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>生菜 Lettuce</td><td>100g</td></tr>
+                    <tr><td>牛油果 Avocado</td><td>1个 (≈150g)</td></tr>
+                    <tr><td>圣女果 Cherry tomatoes</td><td>10颗</td></tr>
+                    <tr><td>鸡蛋 (蛋卷) Eggs (for roll)</td><td>3个</td></tr>
+                    <tr><td>调味 (酱油/糖/油) Seasoning</td><td>适量 to taste</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈480 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈10 min)</h3>
+            <ol class="steps">
+              <li>生菜洗净撕片，圣女果对半切，牛油果切片（淋柠檬汁防氧化）。<br>Wash & tear lettuce, halve tomatoes, slice avocado (lemon juice to prevent browning).</li>
+              <li>鸡蛋打散，加1勺酱油+1勺糖+少盐，分次煎薄蛋皮卷成长条，冷却切段。<br>Beat eggs with soy sauce, sugar, salt; fry thin layers and roll, cool & slice.</li>
+              <li>盘底铺生菜，摆蛋卷、牛油果、圣女果，淋橄榄油或日式酱汁。<br>Base with lettuce, arrange rolls, avocado, tomatoes; drizzle olive oil or Japanese dressing.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://thumbs.dreamstime.com/b/super-food-bowl-eggs-quinoa-roasted-vegetables-83948798.jpg" alt="Onsen Egg Sweet Potato Avocado Salad">
+            <div class="card-content">
+              <div>
+                <h3>温泉蛋甜薯牛油果沙拉<br><span class="en">Onsen Egg Sweet Potato Avocado Salad</span></h3>
+                <p class="desc bilingual">饱腹又护眼<br><span class="en">Filling & eye-protecting</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>紫皮甜薯 Purple sweet potato</td><td>150g</td></tr>
+                    <tr><td>鸡蛋 (温泉蛋) Eggs (onsen)</td><td>2个</td></tr>
+                    <tr><td>牛油果 Avocado</td><td>1个</td></tr>
+                    <tr><td>生菜 Lettuce</td><td>100g</td></tr>
+                    <tr><td>圣女果 Cherry tomatoes</td><td>适量 to taste</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈520 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈12 min)</h3>
+            <ol class="steps">
+              <li>甜薯切厚片，蒸/烤10分钟至软。<br>Cut & steam/roast sweet potato until soft.</li>
+              <li>鸡蛋煮6-7分钟成半流心，冰水去壳对半切。<br>Boil eggs 6-7 min for jammy yolk, ice bath & halve.</li>
+              <li>生菜垫底，放甜薯、牛油果、温泉蛋、圣女果，淋酸奶或油醋汁。<br>Base with lettuce, arrange ingredients, drizzle yogurt or vinaigrette.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://greenlitebites.com/wp-content/uploads/2023/04/avocado-toast-1.jpg" alt="Sunny Egg Colorful Veggie Toast Salad">
+            <div class="card-content">
+              <div>
+                <h3>阳光蛋彩蔬吐司沙拉<br><span class="en">Sunny Egg Colorful Veggie Toast Salad</span></h3>
+                <p class="desc bilingual">色彩满分活力早餐<br><span class="en">Vibrant & energizing breakfast</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>全麦吐司 Whole wheat toast</td><td>2片 slices</td></tr>
+                    <tr><td>鸡蛋 Eggs</td><td>2个</td></tr>
+                    <tr><td>西兰花/玉米/胡萝卜 Broccoli/Corn/Carrot</td><td>各80-100g each</td></tr>
+                    <tr><td>牛油果 Avocado</td><td>½个</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈450 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈10 min)</h3>
+            <ol class="steps">
+              <li>蔬菜切块蒸/烤8分钟。<br>Steam/roast chopped veggies.</li>
+              <li>吐司烤金黄切三角，牛油果切片。<br>Toast bread & cut, slice avocado.</li>
+              <li>煎流心蛋。<br>Fry sunny-side-up eggs.</li>
+              <li>组盘淋橄榄油+柠檬汁。<br>Assemble & drizzle olive oil + lemon.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://www.superhealthykids.com/wp-content/uploads/2023/08/veggie-wrap-5.jpg" alt="Veggie Wrap Apple Salad">
+            <div class="card-content">
+              <div>
+                <h3>蔬菜卷饼苹果沙拉<br><span class="en">Veggie Wrap Apple Salad</span></h3>
+                <p class="desc bilingual">方便携带均衡午餐<br><span class="en">Portable balanced lunch</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>全麦tortillas Whole wheat wraps</td><td>2片</td></tr>
+                    <tr><td>鸡蛋/火腿/奶酪 (内馅) Filling</td><td>适量 to taste</td></tr>
+                    <tr><td>生菜/胡萝卜/黄瓜 Lettuce/Carrot/Cucumber</td><td>各80g each</td></tr>
+                    <tr><td>苹果 Apple</td><td>1个</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈510 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈8 min)</h3>
+            <ol class="steps">
+              <li>馅料炒好包入tortillas，轻煎金黄。<br>Cook filling, wrap & lightly toast.</li>
+              <li>蔬菜苹果切好。<br>Prep veggies & apple.</li>
+              <li>卷饼切半，周围摆蔬果，淋酱汁。<br>Halve wrap, arrange sides, drizzle dressing.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://www.garlicandzest.com/wp-content/uploads/2023/05/corn-avocado-salad-13.jpg" alt="Rainbow Avocado Corn Veggie Salad">
+            <div class="card-content">
+              <div>
+                <h3>彩虹牛油果玉米蔬菜沙拉<br><span class="en">Rainbow Avocado Corn Veggie Salad</span></h3>
+                <p class="desc bilingual">纯素高纤维抗氧化<br><span class="en">Vegan high-fiber antioxidant bomb</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>牛油果 Avocado</td><td>1个</td></tr>
+                    <tr><td>玉米粒 Corn kernels</td><td>100g</td></tr>
+                    <tr><td>黄瓜/圣女果/彩椒/洋葱 Cucumber/Tomatoes/Peppers/Onion</td><td>总200g total</td></tr>
+                    <tr><td>柠檬汁+橄榄油 Lemon juice + olive oil</td><td>适量 to taste</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈380 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈5 min)</h3>
+            <ol class="steps">
+              <li>蔬菜切丁，牛油果切块。<br>Dice veggies, cube avocado.</li>
+              <li>混合加柠檬汁、油、盐拌匀。<br>Toss with lemon, oil, salt.</li>
+              <li>冷藏入味10分钟。<br>Chill 10 min to meld flavors.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://thumbs.dreamstime.com/z/golden-omelette-salad-mix-spicy-aroma-top-404868819.jpg" alt="Fried Egg Wrap Lettuce Salad">
+            <div class="card-content">
+              <div>
+                <h3>煎蛋卷饼生菜沙拉<br><span class="en">Fried Egg Wrap Lettuce Salad</span></h3>
+                <p class="desc bilingual">蛋白质拉满的轻食选择<br><span class="en">Protein-packed light meal</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>混合生菜 Mixed greens</td><td>150g</td></tr>
+                    <tr><td>鸡蛋 Eggs</td><td>2个</td></tr>
+                    <tr><td>奶酪/蔬菜馅 Cheese/Veggie filling</td><td>适量 to taste</td></tr>
+                    <tr><td>圣女果 Cherry tomatoes</td><td>8颗</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈470 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈8 min)</h3>
+            <ol class="steps">
+              <li>生菜洗净，圣女果对半。<br>Wash greens, halve tomatoes.</li>
+              <li>鸡蛋打散加奶酪/蔬菜，煎成薄饼，对折切三角，再轻煎外脆。<br>Beat eggs with filling, fry thin omelet, fold & crisp triangles.</li>
+              <li>生菜垫底，放煎饼和圣女果，淋油醋汁或千岛酱。<br>Base with greens, add omelet & tomatoes, drizzle vinaigrette or thousand island.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://moorlandseater.com/wp-content/uploads/2021/04/tamagoyaki-japanese-omelette-featured-moorlands-eater-DSC05648.jpg" alt="Japanese Chicken Egg Roll Rice Bowl (Salad Style)">
+            <div class="card-content">
+              <div>
+                <h3>日式鸡肉蛋卷饭碗（沙拉风）<br><span class="en">Japanese Chicken Egg Roll Rice Bowl (Salad Style)</span></h3>
+                <p class="desc bilingual">温暖又营养的日式一碗餐<br><span class="en">Warm & nutritious Japanese one-bowl meal</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>米饭 Cooked rice</td><td>150g</td></tr>
+                    <tr><td>鸡肉片 Chicken slices</td><td>150g</td></tr>
+                    <tr><td>鸡蛋 (蛋卷) Eggs (roll)</td><td>2个</td></tr>
+                    <tr><td>金针菇 Enoki mushrooms</td><td>100g</td></tr>
+                    <tr><td>海苔丝/圣女果 Nori/Tomatoes</td><td>适量 to taste</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈550 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈12 min)</h3>
+            <ol class="steps">
+              <li>米饭煮熟，鸡肉加酱油姜汁炒熟。<br>Cook rice, stir-fry chicken with soy & ginger.</li>
+              <li>金针菇烫熟，蛋卷同第1道做法。<br>Blanch enoki, make egg roll like #1.</li>
+              <li>碗底铺饭，摆肉、蛋卷、金针菇、海苔、圣女果，淋照烧酱。<br>Base with rice, arrange toppings, drizzle teriyaki sauce.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://cdn-aboak.nitrocdn.com/QJsLnWfsWAiuukSIMowyVEHtotvSQZoR/assets/images/optimized/rev-ca18e1d/www.slenderkitchen.com/sites/default/files/styles/featured_1500/public/recipe_images/sushi-bowl.jpg" alt="Meat Veggie Onsen Egg Rice Bowl">
+            <div class="card-content">
+              <div>
+                <h3>肉蔬温泉蛋饭碗<br><span class="en">Meat Veggie Onsen Egg Rice Bowl</span></h3>
+                <p class="desc bilingual">超级食物组合恢复体力<br><span class="en">Superfood combo for recovery</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>猪肉/牛肉片 Pork/Beef slices</td><td>150g</td></tr>
+                    <tr><td>西兰花/胡萝卜 Broccoli/Carrot</td><td>各100g each</td></tr>
+                    <tr><td>鸡蛋 (温泉蛋) Egg (onsen)</td><td>1个</td></tr>
+                    <tr><td>海苔丝 Nori shreds</td><td>适量 to taste</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈580 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈10 min)</h3>
+            <ol class="steps">
+              <li>肉片和蔬菜加蒜末酱油快炒5分钟。<br>Quick stir-fry meat & veggies with garlic soy.</li>
+              <li>温泉蛋煮6-7分钟冰激去壳。<br>Boil onsen egg, shock in ice.</li>
+              <li>碗中铺饭或直接放炒菜，顶上放温泉蛋+海苔丝。<br>Base bowl, top with egg & nori.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://i0.wp.com/smittenkitchen.com/wp-content/uploads//2013/05/japanese-vegetable-pancakes.jpg?fit=750%2C500&ssl=1" alt="Minced Meat Egg Pancake Lettuce Plate">
+            <div class="card-content">
+              <div>
+                <h3>肉末蛋饼生菜沙拉盘<br><span class="en">Minced Meat Egg Pancake Lettuce Plate</span></h3>
+                <p class="desc bilingual">脆嫩结合的日式风健身餐<br><span class="en">Crisp & tender Japanese-style fitness meal</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>鸡蛋 Eggs</td><td>2个</td></tr>
+                    <tr><td>肉末 Ground meat</td><td>100g</td></tr>
+                    <tr><td>生菜 Lettuce</td><td>100g</td></tr>
+                    <tr><td>炸葱/柴鱼片 Fried onion/Bonito flakes</td><td>少许 to taste</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈550 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈10 min)</h3>
+            <ol class="steps">
+              <li>生菜垫底。<br>Base with lettuce.</li>
+              <li>肉末拌蛋+葱煎圆饼，撒炸葱。<br>Mix meat with egg & green onion, fry pancake, top with crispy bits.</li>
+              <li>另炒或烤肉片摆旁，淋日式酱油或甜辣酱。<br>Cook extra meat slices, arrange & drizzle soy or sweet chili.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 @Jobs_t · 热量为估算值，实际依食材而定 | Calorie estimates; actual varies by ingredients</p>
+    <p>欢迎打印/分享你的健康餐盘！ | Feel free to print & share your healthy bowls! 🥗</p>
+  </footer>
+
+  <script>
+    function sharePage() {
+      if (navigator.share) {
+        navigator.share({
+          title: '健康沙拉日记 | Healthy Salad Diary @Jobs_t',
+          text: '9道超好看又营养的沙拉餐盘！中英文对照，做法+热量一目了然～ | 9 beautiful & nutritious salad bowls! Bilingual, recipes + calories included.',
+          url: window.location.href
+        });
+      } else {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          alert('✅ 链接已复制！快分享给朋友 | Link copied! Share with friends~');
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>
