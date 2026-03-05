@@ -32,16 +32,8 @@
       padding: 80px 20px 60px;
       box-shadow: 0 4px 20px rgba(74,144,226,0.2);
     }
-    header h1 {
-      margin: 0;
-      font-size: 3.2em;
-      font-weight: 700;
-    }
-    header .subtitle {
-      font-size: 1.4em;
-      margin: 12px 0 8px;
-      opacity: 0.95;
-    }
+    header h1 { margin: 0; font-size: 3.2em; font-weight: 700; }
+    header .subtitle { font-size: 1.4em; margin: 12px 0 8px; opacity: 0.95; }
     .action-buttons {
       position: fixed;
       top: 20px;
@@ -205,94 +197,43 @@
       .action-buttons { top: 15px; right: 15px; flex-direction: column; gap: 10px; }
     }
 
-    /* 打印优化：只显示正面，避免镜像，垂直排列 */
-@media print {
-  /* 隐藏非必要元素，节省空间 */
-  .action-buttons,
-  header,
-  footer {
-    display: none !important;
-  }
-
-  /* 强制所有卡片“摊平”：移除任何翻转/3D变换 */
-  .flip-card,
-  .flip-card-inner,
-  .flip-card-front,
-  .flip-card-back {
-    transform: none !important;
-    transition: none !important;
-    transform-style: flat !important;          /* 强制扁平化 */
-    backface-visibility: visible !important;   /* 避免隐藏 */
-    -webkit-print-color-adjust: exact;        /* 强制保留背景色（可选） */
-  }
-
-  /* 关键：只显示正面，彻底隐藏背面（避免镜像/重复） */
-  .flip-card-back {
-    display: none !important;
-    visibility: hidden !important;
-  }
-
-  .flip-card-front {
-    display: flex !important;
-    position: relative !important;             /* 确保层级正常 */
-  }
-
-  /* 移除 flipped 类残留效果 */
-  .flip-card.flipped .flip-card-inner {
-    transform: none !important;
-  }
-
-  /* 布局优化：垂直单列 + 防分页截断 */
-  .gallery {
-    display: block !important;
-  }
-
-  .flip-card {
-    height: auto !important;
-    min-height: unset !important;
-    page-break-inside: avoid !important;       /* 避免卡片内部断页 */
-    break-inside: avoid-page !important;       /* 现代写法 */
-    margin-bottom: 40px !important;            /* 每张卡片间距 */
-    border: 1px solid #ccc !important;         /* 可选：打印边框参考 */
-  }
-
-  /* 内容自适应 + 强制显示完整 */
-  .card-content {
-    height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;              /* 允许溢出显示 */
-    padding: 15px !important;
-  }
-
-  .ingredients {
-    page-break-inside: avoid !important;
-  }
-
-  .ingredients table {
-    width: 100% !important;
-    table-layout: auto !important;             /* 允许表格自动调整列宽 */
-    border-collapse: collapse !important;
-  }
-
-  .ingredients th,
-  .ingredients td {
-    padding: 8px !important;
-    border: 1px solid #000 !important;         /* 打印时加边框，便于阅读 */
-    word-break: break-all !important;          /* 长词强制换行 */
-    white-space: normal !important;
-  }
-
-  /* 文字强制清晰 */
-  body * {
-    color: black !important;
-    background: white !important;
-    font-size: 10pt !important;                /* 打印字体适中 */
-  }
-
-  h3, .desc, .calorie {
-    font-size: 12pt !important;
-  }
-}
+    @media print {
+      .action-buttons, header, footer { display: none !important; }
+      .flip-card, .flip-card-inner, .flip-card-front, .flip-card-back {
+        transform: none !important;
+        transition: none !important;
+        transform-style: flat !important;
+        backface-visibility: visible !important;
+      }
+      .flip-card-back { display: none !important; visibility: hidden !important; }
+      .flip-card-front { display: flex !important; position: relative !important; }
+      .flip-card.flipped .flip-card-inner { transform: none !important; }
+      .gallery { display: block !important; }
+      .flip-card {
+        height: auto !important;
+        min-height: unset !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid-page !important;
+        margin-bottom: 40px !important;
+        border: 1px solid #ccc !important;
+      }
+      .card-content {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        padding: 15px !important;
+      }
+      .ingredients { page-break-inside: avoid !important; }
+      .ingredients table { width: 100% !important; table-layout: auto !important; }
+      .ingredients th, .ingredients td {
+        padding: 8px !important;
+        border: 1px solid #000 !important;
+        word-break: break-all !important;
+        white-space: normal !important;
+      }
+      body * { color: black !important; background: white !important; font-size: 10pt !important; }
+      h3, .desc, .calorie { font-size: 12pt !important; }
+    }
   </style>
 </head>
 <body>
@@ -311,7 +252,7 @@
   <div class="container">
     <div class="gallery">
 
-      <!-- 1 -->
+      <!-- 1. 牛油果日式蛋卷蔬菜沙拉 -->
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
@@ -327,7 +268,7 @@
                     <tr><td>牛油果 Avocado</td><td>1个 (≈150g)</td></tr>
                     <tr><td>圣女果 Cherry tomatoes</td><td>10颗</td></tr>
                     <tr><td>鸡蛋 (蛋卷) Eggs (for roll)</td><td>3个</td></tr>
-                    <tr><td>调味 (酱油/糖/油) Seasoning</td><td>适量 to taste</td></tr>
+                    <tr><td>调味 Seasoning</td><td>适量 to taste</td></tr>
                   </table>
                 </div>
               </div>
@@ -345,7 +286,7 @@
         </div>
       </div>
 
-      <!-- 2 -->
+      <!-- 2. 温泉蛋甜薯牛油果沙拉 -->
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
@@ -379,7 +320,7 @@
         </div>
       </div>
 
-      <!-- 3 -->
+      <!-- 3. 阳光蛋彩蔬吐司沙拉 -->
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
@@ -413,7 +354,7 @@
         </div>
       </div>
 
-      <!-- 4 -->
+      <!-- 4. 蔬菜卷饼苹果沙拉 -->
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
@@ -446,7 +387,7 @@
         </div>
       </div>
 
-      <!-- 5 -->
+      <!-- 5. 彩虹牛油果玉米蔬菜沙拉 -->
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
@@ -479,7 +420,7 @@
         </div>
       </div>
 
-      <!-- 6 -->
+      <!-- 6. 煎蛋卷饼生菜沙拉 -->
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
@@ -512,7 +453,7 @@
         </div>
       </div>
 
-      <!-- 7 -->
+      <!-- 7. 日式鸡肉蛋卷饭碗（沙拉风） -->
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
@@ -546,7 +487,7 @@
         </div>
       </div>
 
-      <!-- 8 -->
+      <!-- 8. 肉蔬温泉蛋饭碗 -->
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
@@ -579,7 +520,7 @@
         </div>
       </div>
 
-      <!-- 9 -->
+      <!-- 9. 肉末蛋饼生菜沙拉盘 -->
       <div class="flip-card" onclick="this.classList.toggle('flipped')">
         <div class="flip-card-inner">
           <div class="flip-card-front">
@@ -612,6 +553,204 @@
         </div>
       </div>
 
+      <!-- 10. 藜麦鹰嘴豆彩虹碗 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://thumbs.dreamstime.com/b/top-down-view-colorful-vibrant-healthy-food-bowl-filled-quinoa-avocado-slices-cherry-tomatoes-kale-roasted-chickpeas-353849699.jpg" alt="Quinoa Chickpea Rainbow Bowl">
+            <div class="card-content">
+              <div>
+                <h3>藜麦鹰嘴豆彩虹碗<br><span class="en">Quinoa Chickpea Rainbow Bowl</span></h3>
+                <p class="desc bilingual">高纤维素食能量碗<br><span class="en">High-fiber vegan energy bowl</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>藜麦 Quinoa</td><td>100g cooked</td></tr>
+                    <tr><td>鹰嘴豆 Chickpeas</td><td>150g</td></tr>
+                    <tr><td>彩椒/黄瓜/樱桃番茄 Bell peppers/Cucumber/Cherry tomatoes</td><td>各80g</td></tr>
+                    <tr><td>牛油果 Avocado</td><td>½个</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈420 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈15 min)</h3>
+            <ol class="steps">
+              <li>藜麦煮熟冷却。<br>Cook & cool quinoa.</li>
+              <li>鹰嘴豆拌橄榄油+柠檬汁腌制。<br>Marinate chickpeas with oil & lemon.</li>
+              <li>蔬菜切丁，牛油果切片，全部混合淋酱。<br>Dice veggies, slice avocado, toss all with dressing.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. 沙爹豆腐蔬菜碗 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://plantbasedjess.com/wp-content/uploads/2022/06/IMG_3654-1024x683.jpg" alt="Tofu Satay Veggie Bowl">
+            <div class="card-content">
+              <div>
+                <h3>沙爹豆腐蔬菜碗<br><span class="en">Tofu Satay Veggie Bowl</span></h3>
+                <p class="desc bilingual">亚洲风高蛋白碗<br><span class="en">Asian-style high-protein bowl</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>豆腐 Tofu</td><td>200g</td></tr>
+                    <tr><td>花生酱沙爹酱 Peanut satay sauce</td><td>2勺</td></tr>
+                    <tr><td>西兰花/胡萝卜 Broccoli/Carrot</td><td>各100g</td></tr>
+                    <tr><td>藜麦 Quinoa</td><td>80g cooked</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈480 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈20 min)</h3>
+            <ol class="steps">
+              <li>豆腐切块烤/煎至金黄。<br>Cube & bake/fry tofu golden.</li>
+              <li>蔬菜蒸熟。<br>Steam veggies.</li>
+              <li>淋沙爹酱拌匀。<br>Drizzle satay sauce & toss.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. 希腊酸奶牛油果蛋碗 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://sofreshnsogreen.com/wp-content/uploads/2024/01/breakfast-bowl-2.jpg" alt="Greek Yogurt Avocado Egg Bowl">
+            <div class="card-content">
+              <div>
+                <h3>希腊酸奶牛油果蛋碗<br><span class="en">Greek Yogurt Avocado Egg Bowl</span></h3>
+                <p class="desc bilingual">高蛋白早餐碗<br><span class="en">High-protein breakfast bowl</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>希腊酸奶 Greek yogurt</td><td>200g</td></tr>
+                    <tr><td>牛油果 Avocado</td><td>1个</td></tr>
+                    <tr><td>煮蛋 Boiled eggs</td><td>2个</td></tr>
+                    <tr><td>蔬菜 Greens/tomatoes</td><td>适量 to taste</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈460 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈10 min)</h3>
+            <ol class="steps">
+              <li>希腊酸奶打底。<br>Base with Greek yogurt.</li>
+              <li>牛油果切片，蛋煮熟切半。<br>Slice avocado, halve boiled eggs.</li>
+              <li>蔬菜摆上，淋橄榄油或蜂蜜。<br>Arrange veggies, drizzle oil or honey.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13. 地中海鹰嘴豆沙拉碗 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://www.themediterraneandish.com/wp-content/uploads/2025/10/Mediterranean-Chickpea-Salad-Edit-14.jpg" alt="Mediterranean Chickpea Salad Bowl">
+            <div class="card-content">
+              <div>
+                <h3>地中海鹰嘴豆沙拉碗<br><span class="en">Mediterranean Chickpea Salad Bowl</span></h3>
+                <p class="desc bilingual">清爽地中海风味<br><span class="en">Refreshing Mediterranean flavor</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>鹰嘴豆 Chickpeas</td><td>200g</td></tr>
+                    <tr><td>黄瓜/番茄/红洋葱 Cucumber/Tomatoes/Red onion</td><td>各100g</td></tr>
+                    <tr><td>羊奶酪 Feta cheese</td><td>50g</td></tr>
+                    <tr><td>橄榄/香草 Olives/herbs</td><td>适量 to taste</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈410 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈10 min)</h3>
+            <ol class="steps">
+              <li>鹰嘴豆沥干。<br>Drain chickpeas.</li>
+              <li>蔬菜切丁，羊奶酪碎。<br>Dice veggies, crumble feta.</li>
+              <li>混合淋橄榄油+柠檬汁+香草。<br>Toss with olive oil, lemon, herbs.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14. 辣金枪鱼牛油果碗 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://thefoodiephysician.com/wp-content/uploads/2022/01/poke-bowl-1-2.jpg" alt="Spicy Tuna Avocado Bowl">
+            <div class="card-content">
+              <div>
+                <h3>辣金枪鱼牛油果碗<br><span class="en">Spicy Tuna Avocado Bowl</span></h3>
+                <p class="desc bilingual">夏威夷风高蛋白<br><span class="en">Hawaiian-style high-protein</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>金枪鱼 Tuna</td><td>150g</td></tr>
+                    <tr><td>牛油果 Avocado</td><td>1个</td></tr>
+                    <tr><td>米饭 Rice</td><td>100g cooked</td></tr>
+                    <tr><td>辣酱/芝麻 Spicy sauce/sesame</td><td>适量 to taste</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈520 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈10 min)</h3>
+            <ol class="steps">
+              <li>金枪鱼切丁拌辣酱。<br>Dice tuna, mix with spicy sauce.</li>
+              <li>米饭打底。<br>Base with rice.</li>
+              <li>放牛油果片，撒芝麻。<br>Top with avocado slices, sesame.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 15. 乡村奶酪蔬菜能量碗 -->
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="https://www.eatingwell.com/thmb/BwAageVr3-bnYoY8aCHdSzZU0d0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/savory-cottage-cheese-bowl-beauty-0581_preview_maxWidth_4000_maxHeight_4000_ppi_300_quality_100-09c19798805e43b3ba64bbe5560f2268.jpg" alt="Cottage Cheese Veggie Power Bowl">
+            <div class="card-content">
+              <div>
+                <h3>乡村奶酪蔬菜能量碗<br><span class="en">Cottage Cheese Veggie Power Bowl</span></h3>
+                <p class="desc bilingual">超高蛋白低卡<br><span class="en">Ultra high-protein low-cal</span></p>
+                <div class="ingredients">
+                  <table>
+                    <tr><th>食材 Ingredient</th><th>份量 Amount</th></tr>
+                    <tr><td>乡村奶酪 Cottage cheese</td><td>200g</td></tr>
+                    <tr><td>蔬菜 (黄瓜/番茄) Veggies (cucumber/tomatoes)</td><td>150g</td></tr>
+                    <tr><td>煮蛋 Boiled eggs</td><td>1-2个</td></tr>
+                    <tr><td>香草/辣椒 Herbs/chili</td><td>适量 to taste</td></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="calorie">≈380 kcal</div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <h3>详细做法 Detailed Recipe (≈5 min)</h3>
+            <ol class="steps">
+              <li>乡村奶酪打底。<br>Base with cottage cheese.</li>
+              <li>蔬菜切片，蛋煮熟切半。<br>Slice veggies, halve boiled eggs.</li>
+              <li>摆上，撒香草/辣椒。<br>Arrange, sprinkle herbs/chili.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -625,7 +764,7 @@
       if (navigator.share) {
         navigator.share({
           title: '健康沙拉日记 | Healthy Salad Diary @Jobs_t',
-          text: '9道超好看又营养的沙拉餐盘！中英文对照，做法+热量一目了然～ | 9 beautiful & nutritious salad bowls! Bilingual, recipes + calories included.',
+          text: '15道超好看又营养的沙拉餐盘！中英文对照，做法+热量一目了然～ | 15 beautiful & nutritious salad bowls! Bilingual, recipes + calories included.',
           url: window.location.href
         });
       } else {
