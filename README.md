@@ -1,9 +1,10 @@
 # SaladDiary
-a note about health food
-未来添加/修改/删除：只需在 dishes 数组中增删对象，保存后刷新浏览器即可。
-版面自动调整：Grid 布局 + height: auto 保证新增后不乱。
-打印时只显示正面信息，完整不截断。
-在 dishes = [ 数组最后一行（逗号后）复制下面这段模板，粘贴即可：
+## a note about health food
+## 未来添加/修改/删除
+### 只需在 dishes 数组中增删对象，保存后刷新浏览器即可。
+### 版面自动调整：Grid 布局 + height: auto 保证新增后不乱。
+### 打印时只显示正面信息，完整不截断。
+### 在 dishes = [ 数组最后一行（逗号后）复制下面这段模板，粘贴即可：
       {
         id: 16,
         zhName: "新菜名称",
