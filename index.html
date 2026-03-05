@@ -206,27 +206,93 @@
     }
 
     /* 打印优化：只显示正面，避免镜像，垂直排列 */
-    @media print {
-      .action-buttons, header, footer { display: none !important; }
-      .flip-card, .flip-card-inner, .flip-card-front, .flip-card-back {
-        transform: none !important;
-        transition: none !important;
-        backface-visibility: visible !important;
-      }
-      .flip-card-back { display: none !important; }
-      .flip-card-front { display: flex !important; }
-      .flip-card.flipped .flip-card-inner { transform: none !important; }
-      .gallery { display: block !important; }
-      .flip-card {
-        height: auto !important;
-        min-height: unset !important;
-        page-break-inside: avoid;
-        break-inside: avoid;
-        margin-bottom: 30px !important;
-      }
-      body, .card-content, h3, p, table { color: black !important; background: white !important; }
-      .ingredients table, .ingredients th, .ingredients td { border: 1px solid black !important; }
-    }
+@media print {
+  /* 隐藏非必要元素，节省空间 */
+  .action-buttons,
+  header,
+  footer {
+    display: none !important;
+  }
+
+  /* 强制所有卡片“摊平”：移除任何翻转/3D变换 */
+  .flip-card,
+  .flip-card-inner,
+  .flip-card-front,
+  .flip-card-back {
+    transform: none !important;
+    transition: none !important;
+    transform-style: flat !important;          /* 强制扁平化 */
+    backface-visibility: visible !important;   /* 避免隐藏 */
+    -webkit-print-color-adjust: exact;        /* 强制保留背景色（可选） */
+  }
+
+  /* 关键：只显示正面，彻底隐藏背面（避免镜像/重复） */
+  .flip-card-back {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  .flip-card-front {
+    display: flex !important;
+    position: relative !important;             /* 确保层级正常 */
+  }
+
+  /* 移除 flipped 类残留效果 */
+  .flip-card.flipped .flip-card-inner {
+    transform: none !important;
+  }
+
+  /* 布局优化：垂直单列 + 防分页截断 */
+  .gallery {
+    display: block !important;
+  }
+
+  .flip-card {
+    height: auto !important;
+    min-height: unset !important;
+    page-break-inside: avoid !important;       /* 避免卡片内部断页 */
+    break-inside: avoid-page !important;       /* 现代写法 */
+    margin-bottom: 40px !important;            /* 每张卡片间距 */
+    border: 1px solid #ccc !important;         /* 可选：打印边框参考 */
+  }
+
+  /* 内容自适应 + 强制显示完整 */
+  .card-content {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;              /* 允许溢出显示 */
+    padding: 15px !important;
+  }
+
+  .ingredients {
+    page-break-inside: avoid !important;
+  }
+
+  .ingredients table {
+    width: 100% !important;
+    table-layout: auto !important;             /* 允许表格自动调整列宽 */
+    border-collapse: collapse !important;
+  }
+
+  .ingredients th,
+  .ingredients td {
+    padding: 8px !important;
+    border: 1px solid #000 !important;         /* 打印时加边框，便于阅读 */
+    word-break: break-all !important;          /* 长词强制换行 */
+    white-space: normal !important;
+  }
+
+  /* 文字强制清晰 */
+  body * {
+    color: black !important;
+    background: white !important;
+    font-size: 10pt !important;                /* 打印字体适中 */
+  }
+
+  h3, .desc, .calorie {
+    font-size: 12pt !important;
+  }
+}
   </style>
 </head>
 <body>
